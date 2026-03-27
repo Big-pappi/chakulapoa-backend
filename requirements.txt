@@ -11,6 +11,7 @@ django-filter>=23.5
 # Database
 psycopg2-binary>=2.9.9    # PostgreSQL adapter
 dj-database-url>=2.1.0    # Parse DATABASE_URL
+PyMySQL>=1.1.0            # MySQL adapter (for PythonAnywhere free tier)
 
 # Environment & Configuration
 python-decouple>=3.8      # Environment variables
