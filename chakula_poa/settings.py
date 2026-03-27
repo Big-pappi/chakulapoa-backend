@@ -32,12 +32,17 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-me-in-producti
 DEBUG = config('DEBUG', default=not IS_PRODUCTION, cast=bool)
 
 # Allowed hosts configuration
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.onrender.com,.vercel.app').split(',')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.onrender.com,.vercel.app,.pythonanywhere.com').split(',')
 
 # Render.com specific settings
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+# PythonAnywhere specific settings
+PYTHONANYWHERE_HOSTNAME = os.environ.get('PYTHONANYWHERE_SITE')
+if PYTHONANYWHERE_HOSTNAME:
+    ALLOWED_HOSTS.append(PYTHONANYWHERE_HOSTNAME)
 
 # Application definition
 INSTALLED_APPS = [
@@ -97,6 +102,14 @@ WSGI_APPLICATION = 'chakula_poa.wsgi.application'
 # =====================
 # Development: Uses PostgreSQL if DATABASE_URL is set, otherwise SQLite
 # Production: Uses PostgreSQL via DATABASE_URL (provided by Render)
+# PythonAnywhere: Uses MySQL via DATABASE_URL
+
+# Enable PyMySQL as MySQL adapter (for PythonAnywhere)
+try:
+    import pymysql
+    pymysql.install_as_MySQLdb()
+except ImportError:
+    pass
 
 if IS_PRODUCTION:
     # Production: PostgreSQL via DATABASE_URL (Render provides this)
